@@ -1,30 +1,18 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
-// console.log(upper); // Logs as undefined before variable upper is declared
+// Empty global variables
+var input;
+var NumberPrompt;
+var UppercasePrompt;
+var LowercasePrompt;
+var SymbolPrompt;
 
-function generatePassword(){ //generatePassword function was not originally defined
-  var length = +lengthEl.value; // This verifies length of password in input field. The + ensures it's logged as a number, not a string
-  var isUpper = upperEl.checked; // .checked tells us if the box has been checked or not, returning a boolean value of true or false repectively
-  var isLower = lowerEl.checked;
-  var isNumbers = numbersEl.checked;
-  var isSymbols = symbolsEl.checked;
-  
-  // console.log(isUpper, isLower, isNumbers, isSymbols, length); //Test to read boolean values when generate password button is clicked
-  // This also logs undefined to the output, we're getting there
-  finalPassword(isUpper, isLower, isNumbers, isSymbols, length);
-
-    function finalPassword () {
-      // console.log(randomUpper()); // Now this prints out random Uppercase, works with all random functions
-      // console.log(randomLower()); // Likewise this prints Lowercase
-      var new_password = randomUpper();
-      if (isLower) new_password = new_password.concat(randomLower())
-      if (isNumbers) new_password = new_password.concat(randomNumber())
-      if (isSymbols) new_password = new_password.concat(randomSymbol())
-      console.log(new_password); // Testing random generator - this is generating a password of 4 max when all boxes are checked
-      //This prints randomUpper case regardless if checked or not, need to fix
-    }
-};
+// All characters to be used in random password
+var symbols = ["!", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~",];
+var numbers = [0,1,2,3,4,5,6,7,8,9];
+var LowerCase = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",];
+var UpperCase = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",];
 
 // Write password to the #password input
 function writePassword() {
@@ -35,40 +23,92 @@ function writePassword() {
 
 }
 
+// Actual password generation
+var options; // Going to use this to store answers to confirms
+
+
+function generatePassword () {
+  input = prompt("Please choose password length between 8-128"); //Inital prompt when hitting button
+  if (input < 8 || input > 128){ //pw must be between 8 and 128
+    enter = prompt("Only enter numbers between 8-128");
+    } else {
+    NumberPrompt = confirm("Would you like this password to contain numbers?"); // confirms if user wants numbers
+    UppercasePrompt = confirm("Would you like this password to contain capital letters?"); // confirms if user wants uppercase
+    LowercasePrompt = confirm("Would you like this password to contain lowercase letters?"); // confirms if user wants lowercase
+    SymbolPrompt = confirm("Would you like this password to contain special symbols (!?@#$ etc.)?"); // confirms if user wants special characters
+    };
+  // Use if else loops to for all possible outcomes (i.e. if user does or does not want all possible combinations for password)
+    if (!NumberPrompt && !UppercasePrompt && !LowercasePrompt && !SymbolPrompt) { // If user chooses no options, they need to start again
+      options = alert("Invalid password criteria, please confirm at least one option");
+    } else if (NumberPrompt && UppercasePrompt && LowercasePrompt && SymbolPrompt) { // If user chooses all 4 options
+      options = numbers.concat(UpperCase, LowerCase, symbols); //Use concat to merge all arrays
+      // console.log(options); // Test, combines all arrays
+      //Next section is for only 3 options selected
+      // Possible options: number, upper, lower; number, upper, symbol; number, lower, symbol; upper, lower, symbol
+    } else if (NumberPrompt && UppercasePrompt && LowercasePrompt) {
+      options = numbers.concat(UpperCase, LowerCase);
+      // console.log(options); // Test, make sure only 3 arrays are combined
+    } else if (NumberPrompt && UppercasePrompt && SymbolPrompt) {
+      options = numbers.concat(UpperCase, symbols);
+    } else if (NumberPrompt && LowercasePrompt && SymbolPrompt) {
+      options = numbers.concat(LowerCase, symbols);
+    } else if (UppercasePrompt && LowercasePrompt && SymbolPrompt) {
+      options = UpperCase.concat(LowerCase, symbols);
+    } 
+        //Next section is for only 2 options selected
+        //Possible options (6): number, upper; number, lower; number, symbol; lower, upper; lower, symbol; upper, symbol
+        else if (NumberPrompt && UppercasePrompt) {
+          options = numbers.concat(UpperCase);
+          // console.log(options); // Test, make sure only 2 arrays are combined
+        }
+        else if (NumberPrompt && LowercasePrompt) {
+          options = numbers.concat(LowerCase);
+        }
+        else if (NumberPrompt && SymbolPrompt) {
+          options = numbers.concat(symbols);
+        }
+        else if (LowercasePrompt && UppercasePrompt) {
+          options = LowerCase.concat(UpperCase);
+        }
+        else if (LowercasePrompt && SymbolPrompt) {
+          options = LowerCase.concat(symbols);
+        }
+        else if (UppercasePrompt && SymbolPrompt) {
+          options = UpperCase.concat(symbols);
+        } 
+          //Final section is for only 1 option selected
+          //Only 4 possibilities: All numbers; all lowercase; all uppercase; all symbols
+          else if (NumberPrompt) {
+            options = numbers;
+            // console.log(options); // Test, make sure only 1 array is logged
+          }
+          else if (LowercasePrompt) {
+            options = LowerCase;
+          }
+          else if (UppercasePrompt) {
+            options = UpperCase;
+          }
+          else if (SymbolPrompt) {
+            options = numbers;
+          };
+  //empty password variable
+  var newPassword = [];
+  //This for loop will use a random number generator to randomly select from all variables in the combined array
+  for (var i = 0; i < input; i++) {
+    var confirmOptions = options[Math.floor(Math.random() * options.length)];
+    // console.log(confirmOptions); //Test to ensure for loop is grabbing random options from each array
+    newPassword.push(confirmOptions); //Adds new randomly selected element to end of empty array
+    // console.log(newPassword); //Test to ensure random array is generated to length of user input
+  }
+
+  var finalPassword = newPassword.join(""); //Needed new variable to join all arrays together
+  DisplayFinalPW(finalPassword); //Calls below function
+  return finalPassword; //executes this function
+}
+
+function DisplayFinalPW(finalPassword) {
+  document.getElementById("password").textContent = finalPassword;
+} // Replaces password in window with final product
+
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
-
-/*Placed specific elements into variables. Created these to make a more concise function, 
-otherwise the above generatePassword function would be much longer*/
-var cardEl = document.getElementById("card-body"); // Output for pw
-var lengthEl = document.getElementById("length"); // Retrieves length of the pw as defined by user
-var upperEl = document.getElementById("uppercase"); // Below retrieves check boxes for prompts
-var lowerEl = document.getElementById("lowercase");
-var numbersEl = document.getElementById("numbers");
-var symbolsEl = document.getElementById("symbols");
-
-//Random letters, numbers, and symbols functions
-function randomLower() { //Returns random lowercase letter
-  var alphabetLower = "abcdefghijklmnopqrstuvwxyz";
-  return alphabetLower[Math.floor(Math.random() * alphabetLower.length)];
-};
-// console.log(randomLower()); //Test of lowercase
-
-function randomUpper() { //Returns random uppercase letter
-  var alphabetUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  return alphabetUpper[Math.floor(Math.random() * alphabetUpper.length)];
-};
-// console.log(randomUpper()); //Test of uppercase
-
-function randomNumber(){ //Returns random number between 0-9
-  return Math.floor(Math.random() * 10);
-};
-
-// console.log(randomNumber()); //Test of number
-
-function randomSymbol() { //Pulls random special character
-  var symbols = " !#$%&'()*+,-./:;<=>?@[\]^_`{|}~";
-  return symbols[Math.floor(Math.random() * symbols.length)];
-};
-
-// console.log(randomSymbol()); //Test of symbol

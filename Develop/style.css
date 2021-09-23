@@ -118,16 +118,6 @@ button[disabled] {
   overflow: hidden;
 }
 
-.container {
-  display: flex;
-  /* justify-content: center; */
-  flex-direction: column;
-}
-
-/* TO DO */
-/* Figure out how to get text above/next to length box */
-/* Figure out how to get text next to check boxes */
-
 @media (max-width: 690px) {
   .btn {
     font-size: 1rem;
