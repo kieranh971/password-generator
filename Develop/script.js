@@ -1,6 +1,8 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
+// console.log(upper); // Logs as undefined before variable upper is declared
+
 function generatePassword(){ //generatePassword function was not originally defined
   var length = +lengthEl.value; // This verifies length of password in input field. The + ensures it's logged as a number, not a string
   var isUpper = upperEl.checked; // .checked tells us if the box has been checked or not, returning a boolean value of true or false repectively
@@ -8,12 +10,21 @@ function generatePassword(){ //generatePassword function was not originally defi
   var isNumbers = numbersEl.checked;
   var isSymbols = symbolsEl.checked;
   
-  // console.log(isUpper, isLower, isNumbers, isSymbols, length); //Test to verify that console reads boolean values when generate password button is clicked
+  // console.log(isUpper, isLower, isNumbers, isSymbols, length); //Test to read boolean values when generate password button is clicked
   // This also logs undefined to the output, we're getting there
-  // cardEl.innerText = validatePassword(isUpper, isLower, isNumbers, isSymbols, length);
+  finalPassword(isUpper, isLower, isNumbers, isSymbols, length);
 
-}
-
+    function finalPassword () {
+      // console.log(randomUpper()); // Now this prints out random Uppercase, works with all random functions
+      // console.log(randomLower()); // Likewise this prints Lowercase
+      var new_password = randomUpper();
+      if (isLower) new_password = new_password.concat(randomLower())
+      if (isNumbers) new_password = new_password.concat(randomNumber())
+      if (isSymbols) new_password = new_password.concat(randomSymbol())
+      console.log(new_password); // Testing random generator - this is generating a password of 4 max when all boxes are checked
+      //This prints randomUpper case regardless if checked or not, need to fix
+    }
+};
 
 // Write password to the #password input
 function writePassword() {
@@ -36,28 +47,16 @@ var lowerEl = document.getElementById("lowercase");
 var numbersEl = document.getElementById("numbers");
 var symbolsEl = document.getElementById("symbols");
 
-//Created a global object that pulls each random function
-//This allows us to call one of the 4 random function in a more concise way
-var random = {
-  upper: randomUpper(),
-  lower: randomLower(),
-  number: randomNumber(),
-  symbol: randomSymbol()
-};
-
-// console.log(random.lower); // Test random object
-// console.log(random.upper); // Test random object
-
 //Random letters, numbers, and symbols functions
 function randomLower() { //Returns random lowercase letter
-  var alphabetLower = "abcdefghijklmnopqrstuvwxyz"
-  return alphabetLower[Math.floor(Math.random() * alphabetLower.length)]
+  var alphabetLower = "abcdefghijklmnopqrstuvwxyz";
+  return alphabetLower[Math.floor(Math.random() * alphabetLower.length)];
 };
 // console.log(randomLower()); //Test of lowercase
 
 function randomUpper() { //Returns random uppercase letter
-  var alphabetUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-  return alphabetUpper[Math.floor(Math.random() * alphabetUpper.length)]
+  var alphabetUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  return alphabetUpper[Math.floor(Math.random() * alphabetUpper.length)];
 };
 // console.log(randomUpper()); //Test of uppercase
 
@@ -68,8 +67,8 @@ function randomNumber(){ //Returns random number between 0-9
 // console.log(randomNumber()); //Test of number
 
 function randomSymbol() { //Pulls random special character
-  var symbols = " !#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
-  return symbols[Math.floor(Math.random() * symbols.length)]
+  var symbols = " !#$%&'()*+,-./:;<=>?@[\]^_`{|}~";
+  return symbols[Math.floor(Math.random() * symbols.length)];
 };
 
 // console.log(randomSymbol()); //Test of symbol
