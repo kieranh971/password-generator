@@ -1,14 +1,14 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
-// Empty global variables
+// Empty global variables to start with
 var input;
 var NumberPrompt;
 var UppercasePrompt;
 var LowercasePrompt;
 var SymbolPrompt;
 
-// All characters to be used in random password
+// All characters to be used in random password: special characters, numbers, upper and lower case letters
 var symbols = ["!", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~",];
 var numbers = [0,1,2,3,4,5,6,7,8,9];
 var LowerCase = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",];
@@ -24,27 +24,28 @@ function writePassword() {
 }
 
 // Actual password generation
-var options; // Going to use this to store answers to confirms
+var options; // Going to use this to store answers to confirmation prompts
 
-
-function generatePassword () {
+function generatePassword () { // This was originally undefined, going to define the function here
   input = prompt("Please choose password length between 8-128"); //Inital prompt when hitting button
   if (input < 8 || input > 128){ //pw must be between 8 and 128
-    enter = prompt("Only enter numbers between 8-128");
-    } else {
-    NumberPrompt = confirm("Would you like this password to contain numbers?"); // confirms if user wants numbers
-    UppercasePrompt = confirm("Would you like this password to contain capital letters?"); // confirms if user wants uppercase
-    LowercasePrompt = confirm("Would you like this password to contain lowercase letters?"); // confirms if user wants lowercase
-    SymbolPrompt = confirm("Would you like this password to contain special symbols (!?@#$ etc.)?"); // confirms if user wants special characters
+    input = alert("Only enter numbers between 8-128.");
+    } else { // Use confirm here to store boolean value of true or false. Use for if else loops after this
+    NumberPrompt = confirm("Would you like this password to contain numbers?"); // confirms if user wants numbers or not
+    UppercasePrompt = confirm("Would you like this password to contain capital letters?"); // confirms if user wants uppercase or not
+    LowercasePrompt = confirm("Would you like this password to contain lowercase letters?"); // confirms if user wants lowercase or not
+    SymbolPrompt = confirm("Would you like this password to contain special symbols (!?@#$ etc.)?"); // confirms if user wants special characters or not
     };
-  // Use if else loops to for all possible outcomes (i.e. if user does or does not want all possible combinations for password)
+  // Use if else loops for all possible outcomes (i.e. if user does or does not want all possible combinations for password)
     if (!NumberPrompt && !UppercasePrompt && !LowercasePrompt && !SymbolPrompt) { // If user chooses no options, they need to start again
-      options = alert("Invalid password criteria, please confirm at least one option");
-    } else if (NumberPrompt && UppercasePrompt && LowercasePrompt && SymbolPrompt) { // If user chooses all 4 options
-      options = numbers.concat(UpperCase, LowerCase, symbols); //Use concat to merge all arrays
+      options = alert("Invalid password criteria, please enter valid password length or confirm at least one option");
+      // If user chooses all 4 options
+    } else if (NumberPrompt && UppercasePrompt && LowercasePrompt && SymbolPrompt) {
+      options = numbers.concat(UpperCase, LowerCase, symbols); //Use concat to merge all array combinations
       // console.log(options); // Test, combines all arrays
+
       //Next section is for only 3 options selected
-      // Possible options: number, upper, lower; number, upper, symbol; number, lower, symbol; upper, lower, symbol
+      // Possible options (4): number, upper, lower; number, upper, symbol; number, lower, symbol; upper, lower, symbol
     } else if (NumberPrompt && UppercasePrompt && LowercasePrompt) {
       options = numbers.concat(UpperCase, LowerCase);
       // console.log(options); // Test, make sure only 3 arrays are combined
